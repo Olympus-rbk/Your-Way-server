@@ -11,6 +11,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginDto } from './dto/login.dto';
+import { UpdatePwDto } from './dto/updatepw.dto';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -49,6 +50,11 @@ export class UserController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
+  }
+
+  @Patch('password/:id')
+  updatePassword(@Param('id') id: string, @Body() updatePwDto: UpdatePwDto) {
+    return this.userService.updatePassword(id, updatePwDto);
   }
 
   @Delete(':id')
