@@ -51,12 +51,10 @@ export class UserController {
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
-
   @Patch('password/:id')
   updatePassword(@Param('id') id: string, @Body() updatePwDto: UpdatePwDto) {
     return this.userService.updatePassword(id, updatePwDto);
   }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
