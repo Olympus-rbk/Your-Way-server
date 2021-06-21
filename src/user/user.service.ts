@@ -46,23 +46,35 @@ export class UserService {
 
   async login(updateUserDto: UpdateUserDto) {
     const user = await this.user.findOne({ email: updateUserDto.email }).exec();
-    if (!user){ 
-    return  `email don't exist` ;
-    }
+    if (!user) return `email don't exist`;
 
     const { password } = user;
     const isMatch = await bcrypt.compare(updateUserDto.password, password);
     if (isMatch) {
-      const payload = { email: user.email };
+      // const payload = { email: user.email };
 
-      const msg = this.jwtService.sign(payload);
-      console.log(msg,user);
-      
-      return user ;
+      // const token = this.jwtService.sign(payload);
+      return user;
     } else {
-      return  'incorrect password';
+      return 'incorrect password';
     }
   }
+
+  // async updatePassword(id: string, updatepwDto: UpdatePwDto) {
+  //   const user = await this.user.findOne({ _id: id }).exec();
+  //   const { password } = user;
+  //   console.log(password);
+  //   const isMatch = await bcrypt.compare(updatepwDto.password, password);
+  //   console.log('^^^', updatepwDto.password);
+  //   if (isMatch) {
+  //     const saltOrRounds = 10;
+  //     const hash = await bcrypt.hash(updatepwDto.newpassword, saltOrRounds);
+  //     return user.updateOne({ password: hash });
+  //   } else {
+  //     return 'incorrect password';
+  //   }
+  //   // return this.user.findOne({ _id: id }).updateOne(updateUserDto);
+  // }
 
   findUser(email: string) {
     return this.user.findOne({ email });
@@ -71,7 +83,7 @@ export class UserService {
   //   return this.user.findOne({ email });
   // }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: any) {
     return this.user.findOne({ _id: id }).updateOne(updateUserDto);
   }
 
