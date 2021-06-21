@@ -6,6 +6,7 @@ import { User } from './user.interface';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { UpdatePwDto } from './dto/updatepw.dto';
 
 @Injectable()
 export class UserService {
@@ -45,17 +46,21 @@ export class UserService {
 
   async login(updateUserDto: UpdateUserDto) {
     const user = await this.user.findOne({ email: updateUserDto.email }).exec();
-    if (!user) return JSON.stringify({ token: `email don't exist` });
+    if (!user){ 
+    return  `email don't exist` ;
+    }
 
     const { password } = user;
     const isMatch = await bcrypt.compare(updateUserDto.password, password);
     if (isMatch) {
       const payload = { email: user.email };
 
-      const token = this.jwtService.sign(payload);
-      return JSON.stringify({ token });
+      const msg = this.jwtService.sign(payload);
+      console.log(msg,user);
+      
+      return user ;
     } else {
-      return JSON.stringify({ token: 'incorrect password' });
+      return  'incorrect password';
     }
   }
 
@@ -70,6 +75,26 @@ export class UserService {
     return this.user.findOne({ _id: id }).updateOne(updateUserDto);
   }
 
+ async updatePassword(id: string, updatepwDto: UpdatePwDto) {
+    const user = await this.user.findOne({ _id: id }).exec()
+    const { password } = user;
+    console.log(password);
+    const isMatch = await bcrypt.compare(updatepwDto.password, password);
+    console.log("^^^^^^^^^^^^",updatepwDto.password);
+    
+    if (isMatch) {
+      const saltOrRounds = 10;
+      const hash = await bcrypt.hash(
+        updatepwDto.newpassword,
+        saltOrRounds,
+      );
+      return user.updateOne({ password: hash });
+      
+    } else {
+      return  'incorrect password';
+    }
+    // return this.user.findOne({ _id: id }).updateOne(updateUserDto);
+  }
   remove(id: string) {
     return this.user.deleteOne({ _id: id });
   }
