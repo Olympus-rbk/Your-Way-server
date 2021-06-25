@@ -12,19 +12,19 @@ export class PlacesService {
     return this.place.create(createPlaceDto);
   }
 
-  findAll() {
-    return this.place.find({}).populate('id_category');
+  findAll(args) {
+    return this.place.find(...args).populate('id_category');
   }
 
-  findOne(id: number) {
-    return this.place.findOne({ id });
+  findOne(id: string) {
+    return this.place.findOne({ _id: id  }).populate('id_category');
   }
 
-  update(id: number, updatePlaceDto: UpdatePlaceDto) {
+  update(id: string, updatePlaceDto: UpdatePlaceDto) {
     return this.place.findOne({ _id: id }).updateOne(updatePlaceDto);
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.place.deleteOne({ _id: id });
   }
 }
