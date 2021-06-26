@@ -57,7 +57,7 @@ export class UserService {
       // console.log(token);
       // console.log(user);
 
-      return user ;
+      return user;
     } else {
       return 'incorrect password';
     }
