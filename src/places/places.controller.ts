@@ -6,7 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  Query
+  Query,
 } from '@nestjs/common';
 import { PlacesService } from './places.service';
 import { CreatePlaceDto } from './dto/create-place.dto';
@@ -26,7 +26,20 @@ export class PlacesController {
     return this.placesService.findAll({ id_category});
   }
 
-  
+  @Get('/onecategory')
+  findAllCat(@Query('id_category') id_category) {
+    // console.log('test category');
+    return this.placesService.findAllCategories({ id_category });
+  }
+
+  @Get('/nearest')
+  findAllP(@Query('long') long, @Query('lat') lat) {
+    console.log(long);
+    console.log(lat);
+
+    return this.placesService.findAllPlaces(long, lat);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.placesService.findOne(id);

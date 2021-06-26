@@ -1,12 +1,11 @@
 import { Document } from 'mongoose';
+import { Coordinates } from './coordinates.schema';
 
-export class Place extends Document {
+export interface Place extends Document {
   name: string;
   picture: string;
   description: string;
   tags: string;
   id_category: string;
-  long: number;
-  lang: number;
+  location: Coordinates;
 }
-

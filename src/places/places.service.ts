@@ -16,8 +16,29 @@ export class PlacesService {
     return this.place.find(...args).populate('id_category');
   }
 
+  findAllCategories(args) {
+    return this.place.find(args).populate('id_category');
+  }
+
+  findAllPlaces(long, lat) {
+    //console.log(typeof long);
+    this.place.createIndexes({ point: '2dsphere' });
+    return this.place.find({
+      location: {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [Number(long), Number(lat)],
+          },
+          $minDistance: 0,
+          $maxDistance: 200000,
+        },
+      },
+    });
+  }
+
   findOne(id: string) {
-    return this.place.findOne({ _id: id  }).populate('id_category');
+    return this.place.findOne({ id });
   }
 
   update(id: string, updatePlaceDto: UpdatePlaceDto) {
