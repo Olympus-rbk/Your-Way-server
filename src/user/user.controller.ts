@@ -16,10 +16,6 @@ import { UpdatePwDto } from './dto/updatepw.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // @Post()
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.userService.create(createUserDto);
-  // }
 
   @Get()
   findAll() {
@@ -40,12 +36,6 @@ export class UserController {
     return this.userService.login(loginDto);
   }
 
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-
-  // @Get(':email')
-  // findOne(@Param('email') email: string) {
-  //   return this.userService.findOne(email);
-  // }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {

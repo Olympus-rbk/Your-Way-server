@@ -22,8 +22,8 @@ export class PlacesController {
   }
 
   @Get()
-  findAll(@Query('id_category') id_category) {
-    return this.placesService.findAll({ id_category});
+  findAll() {
+    return this.placesService.findAll();
   }
 
   @Get('/onecategory')

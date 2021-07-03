@@ -53,62 +53,36 @@ export class UserService {
     if (isMatch) {
       const payload = { email: user.email };
       const token = this.jwtService.sign(payload);
-      // console.log(token);
-      // console.log(user);
-
       return JSON.stringify({ token, user });
     } else {
       return 'incorrect password';
     }
   }
 
-  // async updatePassword(id: string, updatepwDto: UpdatePwDto) {
-  //   const user = await this.user.findOne({ _id: id }).exec();
-  //   const { password } = user;
-  //   console.log(password);
-  //   const isMatch = await bcrypt.compare(updatepwDto.password, password);
-  //   console.log('^^^', updatepwDto.password);
-  //   if (isMatch) {
-  //     const saltOrRounds = 10;
-  //     const hash = await bcrypt.hash(updatepwDto.newpassword, saltOrRounds);
-  //     return user.updateOne({ password: hash });
-  //   } else {
-  //     return 'incorrect password';
-  //   }
-  //   // return this.user.findOne({ _id: id }).updateOne(updateUserDto);
-  // }
+  async updatePassword(id: string, updatepwDto: UpdatePwDto) {
+    const user = await this.user.findOne({ _id: id }).exec();
+    const { password } = user;
+    console.log(password);
+    const isMatch = await bcrypt.compare(updatepwDto.password, password);
+    console.log('^^^', updatepwDto.password);
+    if (isMatch) {
+      const saltOrRounds = 10;
+      const hash = await bcrypt.hash(updatepwDto.newpassword, saltOrRounds);
+      return user.updateOne({ password: hash });
+    } else {
+      return 'incorrect password';
+    }
+    // return this.user.findOne({ _id: id }).updateOne(updateUserDto);
+  }
 
   findUser(email: string) {
     return this.user.findOne({ email });
   }
-  // findOne(email: string) {
-  //   return this.user.findOne({ email });
-  // }
 
   update(id: string, updateUserDto: any) {
     return this.user.findOne({ _id: id }).updateOne(updateUserDto);
   }
 
- async updatePassword(id: string, updatepwDto: UpdatePwDto) {
-    const user = await this.user.findOne({ _id: id }).exec()
-    const { password } = user;
-    console.log(password);
-    const isMatch = await bcrypt.compare(updatepwDto.password, password);
-    console.log("^^^^^^^^^^^^",updatepwDto.password);
-    
-    if (isMatch) {
-      const saltOrRounds = 10;
-      const hash = await bcrypt.hash(
-        updatepwDto.newpassword,
-        saltOrRounds,
-      );
-      return user.updateOne({ password: hash });
-      
-    } else {
-      return  'incorrect password';
-    }
-    // return this.user.findOne({ _id: id }).updateOne(updateUserDto);
-  }
   remove(id: string) {
     return this.user.deleteOne({ _id: id });
   }
